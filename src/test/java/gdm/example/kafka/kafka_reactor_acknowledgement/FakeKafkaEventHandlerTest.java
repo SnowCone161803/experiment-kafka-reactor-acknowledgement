@@ -23,8 +23,8 @@ public class FakeKafkaEventHandlerTest {
         fakeKafkaEventHandler.pretendWeReceivedAMessageFromKafka();
         Thread.sleep(2_000);
     }
-    @Test
 
+    @Test
     void itShouldPutOnTheDeadLetterTopicWhenSomethingFails() throws Exception {
         fakeKafkaEventHandler.addEventHandler(ev ->
             ev.doOnNext(e -> log.info("event handler 1 happened: {}", e))

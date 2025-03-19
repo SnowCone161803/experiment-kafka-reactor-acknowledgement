@@ -22,7 +22,6 @@ public class FakeKafkaEventHandler {
 
     private final Sinks.Many<Tuple<Mono<MyEvent>, FakeAcknowledgement>> eventSink = Sinks.many().multicast().onBackpressureBuffer();
     private final List<Function<Mono<MyEvent>, Publisher<Object>>> eventHandlers = new LinkedList<>();
-    private Flux<Tuple<Mono<MyEvent>, FakeAcknowledgement>> events;
     private final AtomicInteger count = new AtomicInteger();
     private Disposable disposable;
 
