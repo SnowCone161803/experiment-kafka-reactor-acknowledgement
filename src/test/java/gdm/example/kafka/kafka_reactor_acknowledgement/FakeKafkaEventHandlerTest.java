@@ -10,13 +10,13 @@ public class FakeKafkaEventHandlerTest {
 
     @Test
     void itShouldShowTheAcknowledgementWhenEmittingSuccessfully() throws Exception {
-        fakeKafkaEventHandler.addEventhandler(ev ->
+        fakeKafkaEventHandler.addEventHandler(ev ->
             ev.doOnNext(e -> log.info("event handler 1 happened: {}", e))
         );
-        fakeKafkaEventHandler.addEventhandler(ev ->
+        fakeKafkaEventHandler.addEventHandler(ev ->
             ev.doOnNext(e -> log.info("event handler 2 happened: {}", e))
         );
-        fakeKafkaEventHandler.startHandlingEvents();
+        fakeKafkaEventHandler.start();
         fakeKafkaEventHandler.pretendWeReceivedAMessageFromKafka();
         fakeKafkaEventHandler.pretendWeReceivedAMessageFromKafka();
         fakeKafkaEventHandler.pretendWeReceivedAMessageFromKafka();
@@ -26,17 +26,17 @@ public class FakeKafkaEventHandlerTest {
     @Test
 
     void itShouldPutOnTheDeadLetterTopicWhenSomethingFails() throws Exception {
-        fakeKafkaEventHandler.addEventhandler(ev ->
+        fakeKafkaEventHandler.addEventHandler(ev ->
+            ev.doOnNext(e -> log.info("event handler 1 happened: {}", e))
+        );
+        fakeKafkaEventHandler.addEventHandler(ev ->
             ev.doOnNext(e -> {
                 throw new IllegalStateException("event handler failed!");
             }));
-        fakeKafkaEventHandler.addEventhandler(ev ->
-            ev.doOnNext(e -> log.info("event handler 1 happened: {}", e))
-        );
-        fakeKafkaEventHandler.addEventhandler(ev ->
+        fakeKafkaEventHandler.addEventHandler(ev ->
             ev.doOnNext(e -> log.info("event handler 2 happened: {}", e))
         );
-        fakeKafkaEventHandler.startHandlingEvents();
+        fakeKafkaEventHandler.start();
         fakeKafkaEventHandler.pretendWeReceivedAMessageFromKafka();
         fakeKafkaEventHandler.pretendWeReceivedAMessageFromKafka();
         fakeKafkaEventHandler.pretendWeReceivedAMessageFromKafka();
